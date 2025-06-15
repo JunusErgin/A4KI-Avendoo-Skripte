@@ -205,11 +205,15 @@ function hideElement(selector) {
   }
 }
 
+function hideElements(list) {
+  list.forEach(hideElement);
+}
+
+
+/**
 removeTextFromLectureTitle('Willkommen im Modul ');
 applyStyle(lectureStyle);
 suppressPopupLinks();
 applyStyle(headerStyle);
 hideElements(['#contentHeader', '#description', '.BL_jumpToPosition'])
-function hideElements(list) {
-  list.forEach(hideElement);
-}
+*/
