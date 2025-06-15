@@ -1,4 +1,4 @@
-const styles = `
+const lectureStyle = `
   #themeWrapper {
     background-color: #f5f7f7;
   }
@@ -66,33 +66,24 @@ const styles = `
   #tutorialMenue > ul li a {
     border-bottom: none;
   }
-
-
-
 `;
 
-const styleSheet = document.createElement("style");
-styleSheet.type = "text/css";
-styleSheet.innerHTML = styles;
-document.head.appendChild(styleSheet);
+function removeTextFromLectureTitle(replaceText) {
+  // Sucht das Element anhand der Klasse oder ID
+  const lectureTitle = document.querySelector('.tutorialChangePage');
 
-
-// Sucht das Element anhand der Klasse oder ID
-const element = document.querySelector('.tutorialChangePage');
-
-// Entfernt den Text "Willkommen im Modul" und die Anführungszeichen
-if (element) {
-    element.textContent = element.textContent.replace('Willkommen im Modul ', '').replace(/"/g, '');
+  // Entfernt den Text "Willkommen im Modul" und die Anführungszeichen
+  if (lectureTitle) {
+    lectureTitle.textContent = lectureTitle.textContent.replace(replaceText, '').replace(/"/g, '');
+  }
 }
-
-
 
 // Funktion, um Fenster NICHT mehr in einem Fenster zu öffnen
 // Wir sind sehr früh im Ladevorgang (document_start),
 // also setzen wir window.open um, bevor Angular es benutzt.
-(function() {
+function suppressPopupLinks() {
   const originalOpen = window.open;
-  window.open = function(url, target, features) {
+  window.open = function (url, target, features) {
     // Wenn Angular z.B. window.open(url, '_blank') aufruft,
     // landen wir hier und leiten einfach auf die URL um:
     window.location.href = url;
@@ -124,4 +115,101 @@ if (element) {
     }
   });
   mo.observe(document.documentElement, { childList: true, subtree: true });
-})();
+}
+
+
+
+// ------
+const logo = 'https://lernwelt.education-partners.de/c/image.media?objectId=1742391448691_1&lang=de';
+
+const navBar = document.querySelector('.navbar-inner');
+navBar.innerHTML = `<img class="ki-logo" src="${logo}">` + navBar.innerHTML;
+
+const headerStyle = `
+body {
+  background: rgb(245, 247, 247);
+}
+
+.ki-logo {
+    height: auto;
+    max-height: 44px;
+    max-width: 154px;
+}
+
+ul#contentMenue li.selected {
+    border-top: none;
+    background: transparent;
+}
+
+.ul#contentMenue li:hover {
+  background: transparent;
+  border-top: none;
+}
+
+.navbar-inner {
+    display: flex;
+    align-items: center;
+    padding-top: 20px;
+}
+
+.navbar-inner .container {
+    display: flex;
+    justify-content: end;
+}
+
+ul#contentMenue li {
+    border-color: transparent;
+}
+
+/*Menüpunkt ausgewählt*/
+.ul#contentMenue li.selected {
+  background: transparent;
+  border-top: none;
+}
+
+#contentMenueArea .navbar-inner {
+    background: transparent;
+    border-bottom: none;
+}
+
+#mainpage {
+  margin-top: 100px;
+}
+
+.learnpath-element-inner {
+    border-radius: 24px !important;
+    border-color: transparent !important;
+}
+
+.learnpathBody .button {
+  display:none;
+}
+`;
+
+
+function applyStyle(css) {
+  const headerStyleSheet = document.createElement("style");
+  headerStyleSheet.type = "text/css";
+  headerStyleSheet.innerHTML = css;
+  document.head.appendChild(headerStyleSheet);
+}
+const elementBackgroundColor = document.querySelector('.elementBackgroundColor');
+if (elementBackgroundColor) {
+  elementBackgroundColor.style.backgroundColor = '';
+}
+
+function hideElement(selector) {
+  const elem = document.querySelector(selector);
+  if (elem) {
+    elem.style.display = 'none';
+  }
+}
+
+removeTextFromLectureTitle('Willkommen im Modul ');
+applyStyle(lectureStyle);
+suppressPopupLinks();
+applyStyle(headerStyle);
+hideElements(['#contentHeader', '#description', '.BL_jumpToPosition'])
+function hideElements(list) {
+  list.forEach(hideElement);
+}
