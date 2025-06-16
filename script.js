@@ -66,6 +66,10 @@ const lectureStyle = `
   #tutorialMenue > ul li a {
     border-bottom: none;
   }
+
+  .nav li a {
+    /* Menü Links */
+  }
 `;
 
 function removeTextFromLectureTitle(replaceText) {
@@ -120,13 +124,13 @@ function suppressPopupLinks() {
 
 
 // ------
-const logo = 'https://lernwelt.education-partners.de/c/image.media?objectId=1742391448691_1&lang=de';
 
-const navBar = document.querySelector('.navbar-inner');
-navBar.innerHTML = `<img class="ki-logo" src="${logo}">` + navBar.innerHTML;
 
 const headerStyle = `
+@import url('https://fonts.googleapis.com/css2?family=Figtree:wght@300;400;500;600;700;800;900&display=swap');
+
 body {
+  font-family: 'Figtree', sans-serif;
   background: rgb(245, 247, 247);
 }
 
@@ -184,7 +188,70 @@ ul#contentMenue li {
 .learnpathBody .button {
   display:none;
 }
+
+
+/* Card ändern */
+.learnpath-element-inner .image .courseItemImage, .learnpath-element-inner .image .sectionCourseItemImage {
+  background-size: cover !important;
+  min-height: 160px !important;
+}
+
+.learnpath-element-inner {
+  overflow: hidden;
+}
+
+.learnpath-element-inner .image {
+  min-height: 170px !important;
+}
+
+.learnpath-element-inner.actual-element, .legend-location {
+  border-color: #f8d6d3 !important;
+} 
+
+.legend-location {
+  box-shadow: 0px 0px 0px 1px #f8d6d3;
+  border: 1px solid #f8d6d3 !important;
+}
+
+ul#contentMenue li:hover {
+  background: transparent !important;
+  border-top: 1px solid #CCC !important;
+  margin-bottom: -1px !important;
+}
+
+.learnpath-element-content .title p {
+  font-family: 'Figtree', sans-serif;
+  font-weight: bold;
+  text-align: start;
+}
+
+.duration_wrapper {
+  display: flex;
+}
+
+.learnpath-element-headline {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+}
+
+.learnpath-element-headline .learnpath-element-headline-inner{
+  flex: 1;
+}
+
 `;
+
+function moveLearnStatsToBottomOfCard() {
+  let cards = document.querySelectorAll('.learnpath-element-inner');
+  cards.forEach(function (card) {
+    // Erste Überschrift in der Karte finden
+    let headline = card.querySelector('.learnpath-element-headline');
+    if (headline) {
+      // Element einfach ans Ende des Elternelements verschieben
+      card.appendChild(headline);
+    }
+  });
+}
 
 
 function applyStyle(css) {
@@ -204,16 +271,33 @@ function hideElement(selector) {
     elem.style.display = 'none';
   }
 }
-
 function hideElements(list) {
   list.forEach(hideElement);
 }
 
+function addLogoToNavbar() {
+  const logoUrl = 'https://lernwelt.education-partners.de/c/image.media?objectId=1742391448691_1&lang=de';
+  // Passe hier den Selector so an, dass er genau auf dein UL.nav-Element zeigt:
+  const navBar = document.querySelector('.navbar-inner');
+  if (!navBar) return;
 
-/**
+  // 2) (Alternativ) insertAdjacentHTML
+  navBar.insertAdjacentHTML('afterbegin', `<img class="ki-logo" src="${logoUrl}">`);
+}
+
+function adjustMainHeight() {
+  document.getElementById('contentContentCourse').style.height = 'calc(100vh - 62px)';
+}
+
 removeTextFromLectureTitle('Willkommen im Modul ');
 applyStyle(lectureStyle);
 suppressPopupLinks();
-applyStyle(headerStyle);
-hideElements(['#contentHeader', '#description', '.BL_jumpToPosition'])
-*/
+
+// -- Für Hauptseite
+// applyStyle(headerStyle);
+// hideElements(['#contentHeader', '#description', '.BL_jumpToPosition', '.showIconLanguages']); // Hauptseite
+// adjustMainHeight();
+// moveLearnStatsToBottomOfCard();
+// addLogoToNavbar();
+
+// Include: https://raw.githubusercontent.com/JunusErgin/A4KI-Avendoo-Skripte/main/script.js
