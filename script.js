@@ -131,7 +131,11 @@ const headerStyle = `
 
 body {
   font-family: 'Figtree', sans-serif;
-  background: rgb(245, 247, 247);
+  background: rgb(245, 247, 247) !important;
+}
+
+#FN_pageContent {
+  background: rgb(245, 247, 247) !important;
 }
 
 .ki-logo {
@@ -239,6 +243,12 @@ ul#contentMenue li:hover {
   flex: 1;
 }
 
+.navbar .nav > li > a {
+  font-size: 16px;
+  font-weight: 500;
+  color: #124658 !important;
+}
+
 `;
 
 function moveLearnStatsToBottomOfCard() {
@@ -251,6 +261,10 @@ function moveLearnStatsToBottomOfCard() {
       card.appendChild(headline);
     }
   });
+}
+
+function setGrayBackground(selector) {
+  document.querySelector(selector).style.background = 'rgba(247, 247, 247)';
 }
 
 
@@ -289,15 +303,37 @@ function adjustMainHeight() {
   document.getElementById('contentContentCourse').style.height = 'calc(100vh - 62px)';
 }
 
+
+function hideMenuItems(selectors) {
+  const menu = document.getElementById('contentMenue');
+  if (!menu) return;
+  selectors.forEach(sel => {
+    // Suche alle passenden Knoten im Menü
+    const items = menu.querySelectorAll(sel);
+    items.forEach(item => {
+      // Ausblenden via CSS, Event-Listener bleiben erhalten (werden nur unsichtbar)
+      item.style.display = 'none';
+    });
+  });
+}
+
 removeTextFromLectureTitle('Willkommen im Modul ');
 applyStyle(lectureStyle);
 suppressPopupLinks();
 
 // -- Für Hauptseite
-// applyStyle(headerStyle);
-// hideElements(['#contentHeader', '#description', '.BL_jumpToPosition', '.showIconLanguages']); // Hauptseite
-// adjustMainHeight();
-// moveLearnStatsToBottomOfCard();
-// addLogoToNavbar();
-
+applyStyle(headerStyle);
+hideElements([
+  '#contentHeader', 
+  '#description', 
+  '.BL_jumpToPosition', 
+  '.showIconLanguages']); // Hauptseite
+adjustMainHeight();
+moveLearnStatsToBottomOfCard();
+addLogoToNavbar();
+hideMenuItems([
+  '.tasks-selector',
+  '.filestore-selector',
+  '.community-selector'
+]);
 // Include: https://raw.githubusercontent.com/JunusErgin/A4KI-Avendoo-Skripte/main/script.js
